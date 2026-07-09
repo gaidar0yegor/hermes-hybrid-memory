@@ -1,0 +1,5 @@
+name: memory-holographic-tools
+version: 0.1.0
+description: "Standalone Holographic fact_store / fact_feedback tools via PluginContext, independent of the active memory.provider."
+kind: standalone
+hooks: []
