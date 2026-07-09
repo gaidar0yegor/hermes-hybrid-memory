@@ -82,18 +82,23 @@ This separation prevents the model from confusing where to read/write facts.
 
 ## Repository Structure
 
-```
+```text
 .
-├── docker/                         # Self-hosted Honcho stack
+├── README.md
+├── SOUL.example.md
+├── POST.draft.md
+├── PUSH.md
+├── docker/
 │   ├── docker-compose.yml
 │   ├── config.toml
 │   └── .env.example
-├── plugin/                         # Holographic bypass plugin
+├── plugin/
 │   └── memory-holographic-tools/
 │       ├── plugin.yaml
 │       └── __init__.py
-├── SOUL.example.md                 # System-prompt memory rules
-└── README.md
+└── assets/
+    ├── architecture-diagram.html
+    └── architecture-diagram.png   # LinkedIn / Telegram cover image
 ```
 
 ---

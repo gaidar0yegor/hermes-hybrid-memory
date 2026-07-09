@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes Hybrid Memory Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 1.5rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot {
+      width: 12px; height: 12px; background: #22d3ee; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem; border: 1px solid #1e293b;
+      padding: 1.5rem; overflow-x: auto;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+    .cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 1.5rem;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem; border: 1px solid #1e293b;
+      padding: 1.25rem;
+    }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>Hermes Hybrid Memory</h1>
+      </div>
+      <p class="subtitle">Honcho (user memory) + Holographic (project memory) bypassing MemoryManager</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 520">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <marker id="arrowhead-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee" />
+          </marker>
+          <marker id="arrowhead-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Hermes Agent core -->
+        <rect x="380" y="40" width="240" height="80" rx="10" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="2"/>
+        <text x="500" y="70" fill="white" font-size="14" font-weight="700" text-anchor="middle">Hermes Agent</text>
+        <text x="500" y="92" fill="#94a3b8" font-size="10" text-anchor="middle">memory.provider = honcho</text>
+
+        <!-- MemoryManager block -->
+        <rect x="340" y="160" width="320" height="90" rx="8" fill="rgba(136, 19, 55, 0.25)" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="355" y="178" fill="#fb7185" font-size="9" font-weight="600">MemoryManager — ONE external provider</text>
+        <rect x="360" y="190" width="120" height="45" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="420" y="210" fill="white" font-size="10" font-weight="600" text-anchor="middle">Honcho</text>
+        <text x="420" y="226" fill="#94a3b8" font-size="8" text-anchor="middle">L4 user memory</text>
+
+        <!-- PluginContext bridge -->
+        <rect x="700" y="160" width="240" height="90" rx="8" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="720" y="180" fill="#fbbf24" font-size="9" font-weight="600">PluginContext bypass</text>
+        <rect x="720" y="195" width="200" height="45" rx="6" fill="rgba(30, 41, 59, 0.6)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="820" y="215" fill="white" font-size="10" font-weight="600" text-anchor="middle">memory-holographic-tools</text>
+        <text x="820" y="231" fill="#94a3b8" font-size="8" text-anchor="middle">kind: standalone</text>
+
+        <!-- Tools registry -->
+        <rect x="360" y="300" width="280" height="70" rx="8" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="500" y="325" fill="white" font-size="12" font-weight="600" text-anchor="middle">memory toolset</text>
+        <text x="500" y="345" fill="#94a3b8" font-size="9" text-anchor="middle">honcho_profile • honcho_search • honcho_conclude</text>
+        <text x="500" y="360" fill="#94a3b8" font-size="9" text-anchor="middle">fact_store • fact_feedback</text>
+
+        <!-- Docker stack -->
+        <rect x="60" y="410" width="880" height="90" rx="12" fill="rgba(251, 191, 36, 0.05)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="80" y="430" fill="#fbbf24" font-size="10" font-weight="600">Self-hosted Honcho stack on Proxmox VE</text>
+
+        <rect x="100" y="445" width="160" height="40" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="180" y="462" fill="white" font-size="10" font-weight="600" text-anchor="middle">PostgreSQL 15</text>
+        <text x="180" y="476" fill="#94a3b8" font-size="8" text-anchor="middle">pgvector</text>
+
+        <rect x="320" y="445" width="120" height="40" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="380" y="465" fill="white" font-size="10" font-weight="600" text-anchor="middle">Redis</text>
+
+        <rect x="500" y="445" width="160" height="40" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="580" y="462" fill="white" font-size="10" font-weight="600" text-anchor="middle">Honcho API</text>
+        <text x="580" y="476" fill="#94a3b8" font-size="8" text-anchor="middle">localhost:8000</text>
+
+        <rect x="740" y="445" width="160" height="40" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="820" y="462" fill="white" font-size="10" font-weight="600" text-anchor="middle">Local Ollama</text>
+        <text x="820" y="476" fill="#94a3b8" font-size="8" text-anchor="middle">nomic-embed-text 768d</text>
+
+        <!-- Arrows -->
+        <line x1="500" y1="120" x2="500" y2="160" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="510" y="142" fill="#94a3b8" font-size="9">1 provider</text>
+
+        <path d="M 660 205 L 700 205" fill="none" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="675" y="198" fill="#fbbf24" font-size="8">bypass</text>
+
+        <line x1="500" y1="250" x2="500" y2="300" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="510" y="278" fill="#94a3b8" font-size="9">registers tools</text>
+
+        <line x1="580" y1="445" x2="580" y2="370" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="590" y="415" fill="#94a3b8" font-size="9">API</text>
+
+        <line x1="180" y1="445" x2="180" y2="370" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="190" y="415" fill="#94a3b8" font-size="9">vectors</text>
+
+        <line x1="820" y1="445" x2="820" y2="370" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="830" y="415" fill="#94a3b8" font-size="9">embeddings</text>
+
+        <!-- Legend -->
+        <text x="820" y="70" fill="white" font-size="10" font-weight="600">Legend</text>
+        <rect x="820" y="82" width="16" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="842" y="90" fill="#94a3b8" font-size="8">Core / Frontend</text>
+        <rect x="820" y="98" width="16" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="842" y="106" fill="#94a3b8" font-size="8">Active Memory</text>
+        <rect x="820" y="114" width="16" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="842" y="122" fill="#94a3b8" font-size="8">Bridge / External</text>
+        <rect x="820" y="130" width="16" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="842" y="138" fill="#94a3b8" font-size="8">Database</text>
+        <rect x="820" y="146" width="16" height="10" rx="2" fill="transparent" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="842" y="154" fill="#94a3b8" font-size="8">Limit boundary</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>Honcho Layer</h3>
+        </div>
+        <ul>
+          <li>• User preferences & identity</li>
+          <li>• Session context & style</li>
+          <li>• Recurring corrections</li>
+          <li>• Tools: honcho_profile, honcho_search, honcho_conclude</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>Holographic Layer</h3>
+        </div>
+        <ul>
+          <li>• Project & infrastructure facts</li>
+          <li>• Codebase & entity graph</li>
+          <li>• External systems & relationships</li>
+          <li>• Tools: fact_store, fact_feedback</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot violet"></div>
+          <h3>The Bypass</h3>
+        </div>
+        <ul>
+          <li>• Plugin kind: standalone</li>
+          <li>• PluginContext.register_tool(..., override=True)</li>
+          <li>• No MemoryManager rewrite</li>
+          <li>• Compatible with Hermes updates</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer">hermes-hybrid-memory • github.com/gaidar0yegor/hermes-hybrid-memory</p>
+  </div>
+</body>
+</html>
